@@ -109,7 +109,7 @@ def main():
             step += 1
             global_step += 1
 
-            if global_step % 10 * 6 == 0:
+            if global_step % 10 ** 6 == 0:
                 path = os.path.join(args.outdir, '{}'.format(global_step))
                 agent.save(path)
 
