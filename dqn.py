@@ -168,19 +168,8 @@ class DQN(agent.AttributeSavingMixin, agent.Agent):
         if self.t % self.target_update_interval == 0:
             self.sync_target_network()
 
-        if self.last_state is not None:
-            self.replay_buffer.append(
-                state=self.last_state,
-                action=self.last_action,
-                reward=reward,
-                next_state=state,
-                next_action=action,
-                is_state_terminal=False)
-
         self.last_state = state
         self.last_action = action
-
-        self.replay_updater.update_if_necessary(self.t)
 
         return self.last_action
 

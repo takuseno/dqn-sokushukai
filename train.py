@@ -94,13 +94,24 @@ def main():
             states = np.roll(states, 1, axis=0)
             states[0] = state
 
-            action = agent.act_and_train(states, reward)
 
             if done:
                 agent.stop_episode_and_train(states, reward, done=done)
                 break
-            elif step == 0 and step % args.update_interval != 0:
+            elif step != 0 and step & args.update_interval == 0:
+                action = agent.act_and_train(states, reward)
+            else:
                 action = last_action
+
+            rbuf.append(
+                state=last_states,
+                action=last_action,
+                reward=reward,
+                next_state=states,
+                next_action=action,
+                is_state_terminal=False)
+
+            agent.replay_updater.update_if_necessary(global_step)
 
             state, reward, done, info = env.step(action)
 
