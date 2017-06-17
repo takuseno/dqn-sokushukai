@@ -5,6 +5,8 @@ import copy
 import os
 import numpy as np
 
+from dqn import DQN
+
 from chainer import functions as F
 from chainer import links as L
 from chainer import optimizers
@@ -61,7 +63,7 @@ def main():
         args.final_exploration_frames,
         lambda: np.random.randint(n_actions))
 
-    agent = agents.DQN(q_func, opt, rbuf, gpu=args.gpu, gamma=0.99,
+    agent = DQN(q_func, opt, rbuf, gpu=args.gpu, gamma=0.99,
                   explorer=explorer, replay_start_size=args.replay_start_size,
                   target_update_interval=args.target_update_interval,
                   update_interval=args.update_interval, phi=phi)

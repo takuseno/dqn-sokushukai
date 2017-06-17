@@ -1,16 +1,21 @@
 ## dqn-sokushukai
 Sample DQN code for 速習会 in Wantedly.
 
+`dqn.py` is based on original [dqn.py](https://github.com/chainer/chainerrl/blob/master/chainerrl/agents/dqn.py) in chainerrl without features not talken in the lecture.
+
+## requirements
+- Python3
+
 ## dependencies
-- chainer
+- chainer==2.0.0
 - gym[atari]
-- chainerrl
+- chainerrl==0.2.0
 - OpenCV3
 
 ## ussage
 ### training
 ```
-$ python train.py --gpu {0 or -1} --render --finale-steps 10000000
+$ python train.py --gpu {0 or -1} --render --final-steps 10000000
 ```
 
 ### playing
