@@ -29,6 +29,7 @@ def main():
     parser.add_argument('--gpu', type=int, default=0)
     parser.add_argument('--load', type=str, default=None)
     parser.add_argument('--render', action='store_true')
+    parser.add_argument('--update-interval', type=int, default=4)
     args = parser.parse_args()
 
     env = gym.make(args.env)
@@ -49,6 +50,7 @@ def main():
     explorer = explorers.ConstantEpsilonGreedy(0, None)
 
     agent = DQN(q_func, opt, rbuf, gpu=args.gpu, gamma=0.99,
+                  update_interval=args.update_interval,
                   explorer=explorer, phi=phi)
 
     if args.load:
@@ -58,9 +60,7 @@ def main():
     episode = 0
 
     while True:
-        action = 0
-        last_action = 0
-        states = np.zeros((4, 84, 84), dtype=np.uint8)
+        states = np.zeros((args.update_interval, 84, 84), dtype=np.uint8)
         reward = 0
         done = False
         sum_of_rewards = 0
@@ -71,7 +71,6 @@ def main():
             if args.render:
                 env.render()
 
-            last_states = copy.deepcopy(states)
             state = cv2.cvtColor(state, cv2.COLOR_RGB2GRAY)
             state = cv2.resize(state, (84, 84))
             states = np.roll(states, 1, axis=0)
@@ -81,12 +80,9 @@ def main():
 
             if done:
                 break
-            elif step == 0 and step % 4 != 0:
-                action = last_action
 
             state, reward, done, info = env.step(action)
 
-            last_action = action
             sum_of_rewards += reward
             step += 1
             global_step += 1
