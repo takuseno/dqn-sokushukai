@@ -48,7 +48,7 @@ def main():
     n_actions = env.action_space.n
 
     q_func = links.Sequence(
-            links.NatureDQNHead(),
+            links.NatureDQNHead(n_input_channels=args.update_interval),
             L.Linear(512, n_actions),
             DiscreteActionValue)
 
